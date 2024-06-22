@@ -1,4 +1,4 @@
-import React, { FC, memo } from "react";
+import { FC, memo } from "react";
 import { IEmployeeCheck } from "@/shared/api/state/employees";
 
 interface IEmployeeCard {
