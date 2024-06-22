@@ -17,7 +17,7 @@ Before running the project, make sure you have the following tools installed:
 ```
 pnpm install
 pnpm  dev # For development
-pnpm build && pnpm start # For production preview
+pnpm build && pnpm preview # For production preview
 ```
 
 ### Project Structure 
