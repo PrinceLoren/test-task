@@ -1,34 +1,21 @@
-import React, { useCallback, useMemo, useState } from "react";
-import { Employee } from "@/shared/api/state/employees";
+import React from "react";
 import EmployeeForm from "./EmployeeForm";
-import { calculateBenefits } from "./calculatedBenefits";
 import { FullSizeSpinner } from "@/shared/ui/loading";
-import { useEmployees } from "@/shared/hooks/useEmployees";
 import EmployeeCard from "./EmployeeCard";
+import { useEmployeeList } from "@/shared/hooks/useEmployeeList";
 
 /**
  * EmployeeList component for displaying and managing employees.
  */
 const EmployeeList: React.FC = () => {
-  const { employees, isInitialLoading, isEmployeesLoading } = useEmployees();
-  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
-    null,
-  );
-
-  const totalCosts = useMemo(() => {
-    return employees.map((employee) => ({
-      ...employee,
-      costPerPaycheck: calculateBenefits(employee),
-    }));
-  }, [employees]);
-
-  const handleEmployeeClick = useCallback((employee: Employee) => {
-    setSelectedEmployee(employee);
-  }, []);
-
-  const handleExitEditMode = useCallback(() => {
-    setSelectedEmployee(null);
-  }, []);
+  const {
+    isInitialLoading,
+    isEmployeesLoading,
+    selectedEmployee,
+    totalCosts,
+    handleEmployeeClick,
+    handleExitEditMode,
+  } = useEmployeeList();
 
   if (isInitialLoading) {
     return <FullSizeSpinner />;

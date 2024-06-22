@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { Employee, employeesState } from "@/shared/api/state/employees";
+import { employeesState, IEmployee } from "@/shared/api/state/employees";
 import { fetchEmployees } from "@/shared/api/employeeAPI";
 
 interface IUseEmployeesResult {
-  employees: Employee[]; // The list of employees
+  employees: IEmployee[]; // The list of employees
   isInitialLoading: boolean; // Flag indicating initial loading state
   isEmployeesLoading: boolean; // Flag indicating employees loading state
-  setEmployees: (employees: Employee[]) => void; // Function to set the employees state
+  setEmployees: (employees: IEmployee[]) => void; // Function to set the employees state
 }
 /**
  * Custom hook for managing employees state and loading states.
@@ -15,7 +15,7 @@ interface IUseEmployeesResult {
  * @returns {IUseEmployeesResult} The state and functions for managing employees.
  */
 export const useEmployees = (): IUseEmployeesResult => {
-  const [employees, setEmployees] = useRecoilState<Employee[]>(employeesState);
+  const [employees, setEmployees] = useRecoilState<IEmployee[]>(employeesState);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [isEmployeesLoading, setIsEmployeesLoading] = useState(false);
 

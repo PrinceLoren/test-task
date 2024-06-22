@@ -1,18 +1,18 @@
-import React, { memo } from "react";
-import { EmployeeCheck } from "@/shared/api/state/employees";
+import React, { FC, memo } from "react";
+import { IEmployeeCheck } from "@/shared/api/state/employees";
 
-interface EmployeeCardProps {
-  employee: EmployeeCheck;
-  onClick: (employee: EmployeeCheck) => void;
+interface IEmployeeCard {
+  employee: IEmployeeCheck;
+  onClick: (employee: IEmployeeCheck) => void;
 }
 
 /**
  * EmployeeCard component for displaying employee details.
  *
- * @param {EmployeeCardProps} props The component props.
+ * @param {IEmployeeCard} props The component props.
  */
-const EmployeeCard: React.FC<EmployeeCardProps> = memo(
-  ({ employee, onClick }: EmployeeCardProps) => {
+const EmployeeCard: FC<IEmployeeCard> = memo(
+  ({ employee, onClick }: IEmployeeCard) => {
     return (
       <div
         className="border p-4 rounded shadow cursor-pointer"

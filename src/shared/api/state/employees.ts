@@ -1,24 +1,24 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
-interface Dependent {
+interface IDependent {
   id: number;
   name: string;
 }
 
-export interface Employee {
+export interface IEmployee {
   id: number;
   name: string;
-  dependents: Dependent[];
+  dependents: IDependent[];
 }
 
-export interface EmployeeCheck extends Employee {
+export interface IEmployeeCheck extends IEmployee {
   costPerPaycheck: number;
 }
 
 const { persistAtom } = recoilPersist();
 
-export const employeesState = atom<Employee[]>({
+export const employeesState = atom<IEmployee[]>({
   key: "employeesState",
   default: [],
   effects_UNSTABLE: [persistAtom],

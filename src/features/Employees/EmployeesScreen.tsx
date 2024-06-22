@@ -1,7 +1,7 @@
-import React from "react";
+import React, { FC } from "react";
 import EmployeeList from "@/entities/Employee/EmployeeList";
 
-const EmployeesScreen: React.FC = () => {
+const EmployeesScreen: FC = () => {
   return (
     <div className="w-full">
       <h1>Employees</h1>
