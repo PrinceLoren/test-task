@@ -50,8 +50,15 @@ const EmployeeForm: FC<IEmployeeForm> = ({
   employee,
   onExitEditMode,
 }: IEmployeeForm): ReactElement => {
-  const { form, fields, append, remove, containerHeight, onSubmit } =
-    useEmployeeForm(employee, onExitEditMode);
+  const {
+    form,
+    fields,
+    append,
+    remove,
+    previewCost,
+    containerHeight,
+    onSubmit,
+  } = useEmployeeForm(employee, onExitEditMode);
 
   // Handle form submission and display appropriate toast
   const handleSubmit: SubmitHandler<EmployeeFormData> = useCallback(
@@ -133,6 +140,11 @@ const EmployeeForm: FC<IEmployeeForm> = ({
               />
             ))}
           </div>
+          {previewCost !== null && (
+            <div className="p-4 bg-gray-100 border-t">
+              <p>Estimated Cost per Paycheck: ${previewCost.toFixed(2)}</p>
+            </div>
+          )}
         </form>
       </Form>
     </div>
