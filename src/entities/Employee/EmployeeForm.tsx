@@ -1,9 +1,6 @@
-import React, { FC, useCallback, useEffect, useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import React, { FC, useCallback } from "react";
 import { z } from "zod";
-import { useRecoilState } from "recoil";
-import { Employee, employeesState } from "@/shared/api/state/employees";
+import { Employee } from "@/shared/api/state/employees";
 import {
   Form,
   FormControl,
@@ -15,8 +12,9 @@ import {
 } from "@/shared/ui/form";
 import { Input } from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
-import { toast } from "@/shared/ui/use-toast";
-import { addEmployee, updateEmployee } from "./employeeUtils";
+import { useEmployeeForm } from "@/shared/hooks/useEmployeeForm";
+import { showAddToast, showUpdateToast } from "@/shared/lib/toastUtils";
+import { SubmitHandler } from "react-hook-form";
 
 const employeeSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -52,73 +50,20 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
   employee,
   onExitEditMode,
 }: EmployeeFormProps): React.ReactElement => {
-  const [employees, setEmployees] = useRecoilState(employeesState);
-  const [containerHeight, setContainerHeight] = useState(450);
+  const { form, fields, append, remove, containerHeight, onSubmit } =
+    useEmployeeForm(employee, onExitEditMode);
 
-  const form = useForm<EmployeeFormData>({
-    resolver: zodResolver(employeeSchema),
-    defaultValues: employee || {
-      name: "",
-      dependents: [{ name: "" }],
-    },
-  });
-
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "dependents",
-  });
-
-  useEffect(() => {
-    setContainerHeight(300 + fields.length * 136);
-  }, [fields.length]);
-
-  useEffect(() => {
-    if (employee) {
-      form.reset(employee);
-    } else {
-      form.reset({
-        name: "",
-        dependents: [{ name: "" }],
-      });
-    }
-  }, [employee, form]);
-
-  const onSubmit = useCallback(
-    (data: EmployeeFormData) => {
+  // Handle form submission and display appropriate toast
+  const handleSubmit: SubmitHandler<EmployeeFormData> = useCallback(
+    (data) => {
+      onSubmit(data);
       if (employee) {
-        const updatedEmployees = updateEmployee(employees, employee, data);
-        setEmployees(updatedEmployees);
-        toast({
-          title: "Employee successfully updated!",
-          description: (
-            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-              <code className="text-white">
-                {JSON.stringify(data, null, 2)}
-              </code>
-            </pre>
-          ),
-        });
+        showUpdateToast(data);
       } else {
-        const newEmployees = addEmployee(employees, data);
-        setEmployees(newEmployees);
-        toast({
-          title: "Employee successfully added!",
-          description: (
-            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-              <code className="text-white">
-                {JSON.stringify(data, null, 2)}
-              </code>
-            </pre>
-          ),
-        });
+        showAddToast(data);
       }
-      form.reset({
-        name: "",
-        dependents: [{ name: "" }],
-      });
-      onExitEditMode();
     },
-    [employees, employee, setEmployees, form, onExitEditMode],
+    [onSubmit, employee],
   );
 
   return (
@@ -129,7 +74,7 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
       <Form {...form}>
         <form
           id="employee-form"
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(handleSubmit)}
           className="space-y-6"
         >
           <div className="sticky top-0 bg-white p-4 border-b shadow-md z-10">
