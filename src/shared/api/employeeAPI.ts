@@ -1,6 +1,6 @@
-import { Employee } from "@/entities/Employee/Employee";
+import { IEmployee } from "@/entities/Employee/IEmployee";
 
-const mockEmployees: Employee[] = [
+const mockEmployees: IEmployee[] = [
   {
     id: 1,
     name: "Alice",
@@ -16,7 +16,7 @@ const mockEmployees: Employee[] = [
   },
 ];
 
-export const fetchEmployees = (): Promise<Employee[]> => {
+export const fetchEmployees = (): Promise<IEmployee[]> => {
   return new Promise((resolve) => {
     setTimeout(() => resolve(mockEmployees), 500);
   });

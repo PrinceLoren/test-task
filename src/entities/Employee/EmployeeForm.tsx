@@ -1,6 +1,6 @@
-import React, { FC, useCallback } from "react";
+import React, { FC, ReactElement, useCallback } from "react";
 import { z } from "zod";
-import { Employee } from "@/shared/api/state/employees";
+import { IEmployee } from "@/shared/api/state/employees";
 import {
   Form,
   FormControl,
@@ -25,7 +25,7 @@ const employeeSchema = z.object({
 
 export type EmployeeFormData = z.infer<typeof employeeSchema>;
 
-interface EmployeeFormProps {
+interface IEmployeeForm {
   /**
    * Function to exit edit mode and reset the form.
    */
@@ -34,7 +34,7 @@ interface EmployeeFormProps {
   /**
    * The employee data to edit, if any. If null, the form will be in add mode.
    */
-  employee?: Employee | null;
+  employee?: IEmployee | null;
 }
 
 /**
@@ -43,13 +43,13 @@ interface EmployeeFormProps {
  * This component provides a form for adding and editing employees and their dependents.
  * It handles form validation using `zod` and `react-hook-form`, and manages state using Recoil.
  *
- * @param {EmployeeFormProps} props - The props for the component.
- * @returns {React.ReactElement} The rendered component.
+ * @param {IEmployeeForm} props - The props for the component.
+ * @returns {ReactElement} The rendered component.
  */
-const EmployeeForm: FC<EmployeeFormProps> = ({
+const EmployeeForm: FC<IEmployeeForm> = ({
   employee,
   onExitEditMode,
-}: EmployeeFormProps): React.ReactElement => {
+}: IEmployeeForm): ReactElement => {
   const { form, fields, append, remove, containerHeight, onSubmit } =
     useEmployeeForm(employee, onExitEditMode);
 

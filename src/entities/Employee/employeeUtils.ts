@@ -1,5 +1,5 @@
 import { EmployeeFormData } from "./EmployeeForm";
-import { Employee } from "@/shared/api/state/employees";
+import { IEmployee } from "@/shared/api/state/employees";
 
 /**
  * Updates an existing employee in the employees array.
@@ -10,10 +10,10 @@ import { Employee } from "@/shared/api/state/employees";
  * @returns The updated array of employees.
  */
 export const updateEmployee = (
-  employees: Employee[],
-  employee: Employee,
+  employees: IEmployee[],
+  employee: IEmployee,
   data: EmployeeFormData,
-): Employee[] => {
+): IEmployee[] => {
   return employees.map((emp) =>
     emp.id === employee.id
       ? {
@@ -36,9 +36,9 @@ export const updateEmployee = (
  * @returns The updated array of employees with the new employee added.
  */
 export const addEmployee = (
-  employees: Employee[],
+  employees: IEmployee[],
   data: EmployeeFormData,
-): Employee[] => {
+): IEmployee[] => {
   const newEmployee = {
     id: employees.length + 1,
     name: data.name,

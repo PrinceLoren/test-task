@@ -3,7 +3,7 @@ import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRecoilState } from "recoil";
-import { Employee, employeesState } from "@/shared/api/state/employees";
+import { employeesState, IEmployee } from "@/shared/api/state/employees";
 import { addEmployee, updateEmployee } from "@/entities/Employee/employeeUtils";
 
 /**
@@ -30,12 +30,12 @@ interface IUseEmployeeFormReturn {
 /**
  * Custom hook for managing employee form state and logic.
  *
- * @param {Employee | null} employee - The employee data to edit, if any.
+ * @param {IEmployee | null} employee - The employee data to edit, if any.
  * @param {VoidFunction} [onExitEditMode] - Function to exit edit mode and reset the form.
  * @returns {IUseEmployeeFormReturn} The form state and handlers.
  */
 export const useEmployeeForm = (
-  employee?: Employee | null,
+  employee?: IEmployee | null,
   onExitEditMode?: VoidFunction,
 ): IUseEmployeeFormReturn => {
   const [employees, setEmployees] = useRecoilState(employeesState);

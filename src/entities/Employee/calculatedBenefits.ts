@@ -1,11 +1,11 @@
-import { Employee } from "@/entities/Employee/Employee";
+import { IEmployee } from "@/entities/Employee/IEmployee";
 
 /**
  * Calculates the cost of benefits for an employee, adjusted for any discounts
  * based on the employee's and dependents' names. The cost is returned on a
  * per-paycheck basis.
  *
- * @param {Employee} employee - The employee object containing the name of the
+ * @param {IEmployee} employee - The employee object containing the name of the
  * employee and a list of dependents.
  * @returns {number} The cost of benefits per paycheck for the given employee.
  *
@@ -16,7 +16,7 @@ import { Employee } from "@/entities/Employee/Employee";
  * - All employees are paid $2000 per paycheck before deductions.
  * - There are 26 paychecks in a year.
  */
-export const calculateBenefits = (employee: Employee): number => {
+export const calculateBenefits = (employee: IEmployee): number => {
   // Base cost of benefits for each employee per year
   const baseCost = 1000;
   // Cost of benefits for each dependent per year
