@@ -5,6 +5,7 @@ import { z } from "zod";
 import { useRecoilState } from "recoil";
 import { employeesState, IEmployee } from "@/shared/api/state/employees";
 import { addEmployee, updateEmployee } from "@/entities/Employee/employeeUtils";
+import { calculateBenefits } from "@/entities/Employee/calculatedBenefits";
 
 /**
  * Schema for validating employee form data using zod.
@@ -24,6 +25,7 @@ interface IUseEmployeeFormReturn {
   append: (value: { name: string }) => void;
   remove: (index: number) => void;
   containerHeight: number;
+  previewCost: number | null;
   onSubmit: (data: EmployeeFormData) => void;
 }
 
@@ -40,6 +42,7 @@ export const useEmployeeForm = (
 ): IUseEmployeeFormReturn => {
   const [employees, setEmployees] = useRecoilState(employeesState);
   const [containerHeight, setContainerHeight] = useState(450);
+  const [previewCost, setPreviewCost] = useState<number | null>(null);
 
   const form = useForm<EmployeeFormData>({
     resolver: zodResolver(employeeSchema),
@@ -71,6 +74,21 @@ export const useEmployeeForm = (
     }
   }, [employee, form]);
 
+  useEffect(() => {
+    const subscription = form.watch((value) => {
+      const tempEmployee: IEmployee = {
+        id: employee?.id || 0,
+        name: value.name || "",
+        dependents: (value.dependents || []).map((dep, index) => ({
+          id: employee?.dependents[index]?.id || index + 1,
+          name: dep?.name || "",
+        })),
+      };
+      setPreviewCost(calculateBenefits(tempEmployee));
+    });
+    return () => subscription.unsubscribe();
+  }, [form.watch(), employee]);
+
   // Handle form submission
   const onSubmit = useCallback(
     (data: EmployeeFormData) => {
@@ -96,6 +114,7 @@ export const useEmployeeForm = (
     append,
     remove,
     containerHeight,
+    previewCost,
     onSubmit,
   };
 };
